@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        ul {
+            list-style:none;
+        }
+        .box {
+            width: 600px;
+            margin: 100px auto;
+            border: 1px solid #000;
+            padding: 20px;
+        }
+        textarea {
+            width: 450px;
+            height: 160px;
+            outline:none;
+            resize: none;
+        }
+        ul {
+            width: 450px;
+            padding-left: 80px;
+        }
+        ul li {
+            line-height: 25px;
+            border-bottom: 1px dashed #cccccc;
+        }
+        input {
+            float: right;
+        }
+    </style>
+</head>
+<body>
+<div class="box" id="weibo">
+    <span>微博发布</span>
+    <textarea name="" id="txt" cols="30" rows="10"></textarea>
+    <button id="btn">发布</button>
+    <ul id="ul">
+
+    </ul>
+</div>
+<script src="common.js"></script>
+<script>
+    // 首先先要获得要操作的对象
+    var ul = $$("ul");
+    var btn = $$("btn");
+    var txt = $$("txt");
+    // 注册点击 事件
+    btn.onclick = function(){
+        var li = document.createElement("li");// 创建一个li标签
+
+        // 添加之前需要进行判断 ，看看文本域里面是否有内容
+        if(txt.value.length==0){  // 如果没有内容的话
+            alert("请输入内容"); // 提示输入信息
+        }else {
+//            ul.appendChild(li);
+            li.innerHTML = txt.value;
+            var input = document.createElement("input");
+            input.type = "button";
+            input.value="删除";
+            li.appendChild(input);
+            var lis = ul.children; // 先获得一下下面的所有的子元素
+            if(lis.length>0){ // 如果里面有子元素的话，则在前面插入新生成的元素
+                ul.insertBefore(li,lis[0]);
+            }else { // 这是第一次发布微博
+                ul.appendChild(li);
+            }
+            // 当点击删除按钮的时候，将当前li删除，也就是将ul中的这个移除
+            var btns = document.getElementsByTagName("input");
+            for(var i=0;i<btns.length;i++){
+                btns[i].onclick = function(){
+                    this.parentNode.parentNode.removeChild(this.parentNode); // 让当前的button按钮的父级的父级的ul元素，再删除li元素
+                }
+            }
+        }
+//        console.log(txt.value);
+    }
+</script>
+</body>
+</html>
